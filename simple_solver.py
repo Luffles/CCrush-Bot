@@ -20,6 +20,7 @@ class SimpleSolver:
         self.game_board = None
         self.potential_start_coords = set()
 
+    # Scoring the matches to see which is the most 'profitable' move
     def get_score(self, candy_type):
         if candy_type in self.simple_candies:
             return 20
@@ -30,17 +31,20 @@ class SimpleSolver:
 
         return 0
 
+    # For every coordinates in the candies coords, add the score calculated from get_score
     def compute_score(self, board, candies_coords):
         score = 0
         for coords in candies_coords:
             candy_value = board[coords[0]][coords[1]]
             score += self.get_score(candy_value)
-
+    # If there are 4 coordinates, multiply that score by 3
         if len(candies_coords) == 4:
             score *= 3
+    # If there are 5 or more coordinates, multiply that score by 10
         if len(candies_coords) >= 5:
             score *= 10
         return score
+
 
     def compute_explosions_chocolate(self, board, color):
         to_explode = []
@@ -63,6 +67,7 @@ class SimpleSolver:
 
         return to_explode
 
+    # Check against two candy types, if they are the same type, it's a match; or, if it's in the match list, it's a match
     def candy_matches(self, type1, type2):
         if type1 == type2:
             return True
